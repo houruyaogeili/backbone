@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>body-parse</title>
+</head>
+<body>
+	<div onclick="alert('uuu')" >我们应用的是bodyParser中间件</div>
+	<input type="button" value="按钮" onclick="showMessage()"/>
+	<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	
+		$.ajax({
+				    url: "/save",
+				    type: "post",
+				    contentType: "application/json",//往服务器传的是
+				    data: JSON.stringify({
+				        name: "henry",
+				        age: 30,
+				        hobby: [ "sport", "coding" ]
+				    })
+				});
+
+	//jqury默认的content-type配置的是application/x-www-form-urlencoded
+	// application/x-www-form-urlencoded 常见的form提交
+	// multipart/form-data 文件提交
+	// application/json 提交json格式的数据
+	// text/xml 提交xml格式的数据
+	//
+	
+	function showMessage(){
+		alert(event.type);
+		alert(this.value);
+	}
+	</script>
+</body>
+</html>

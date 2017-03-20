@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Backbonejs中的Collections实践</title>
+</head>
+<body>
+	<script type="text/javascript" src="http://the5fireblog.b0.upaiyun.com/staticfile/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="http://the5fireblog.b0.upaiyun.com/staticfile/underscore.js"></script>
+	<script type="text/javascript" src="http://the5fireblog.b0.upaiyun.com/staticfile/backbone.js"></script>
+	<script type="text/javascript">
+	/*
+		collection是model对象的一个有序的集合，也可以理解为model的容器
+	*/
+	(function($){
+		var Book = Backbone.Model.extend({
+			defaults:{
+				title:'default'
+			},
+			initialize: function(){
+
+			}
+		});
+
+		var BookShelf = Backbone.Collection.extend({
+			model: Book
+		});
+
+		var book1 = new Book({title:'book1'});
+		var book2 = new Book({title:'book2'});
+		var book3 = new Book({title:'book3'});
+
+		var bookShelf = new BookShelf;
+
+		bookShelf.add(book1); 
+		bookShelf.add(book2); 
+		bookShelf.add(book3);
+
+		bookShelf.remove(book3); 
+
+		//基于underscore这个js库，还可以使用each的方法获取collection中的数据
+		bookShelf.each(function(book){
+			alert(book.get('title'));
+		});
+
+		//使用fetch从服务器端获取数据
+		bookShelf.url='/books/';
+		bookShelf.fetch({
+			success: function(collection,response,options){
+				collection.each(function(book){
+					alert(book.get('title'));
+				});
+			},error:function(collection,response,options){
+				alert('error');
+			}
+		});
+	})(jQuery);
+	
+	</script>
+</body>
+</html>

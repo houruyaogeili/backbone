@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Backbonejs中的Collections实践</title>
+</head>
+<body>
+	<a href="#/manual">manual</a>
+	<script type="text/javascript" src="http://the5fireblog.b0.upaiyun.com/staticfile/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="http://the5fireblog.b0.upaiyun.com/staticfile/underscore.js"></script>
+	<script type="text/javascript" src="http://the5fireblog.b0.upaiyun.com/staticfile/backbone.js"></script>
+	<script type="text/javascript">
+	/*
+		collection是model对象的一个有序的集合，也可以理解为model的容器
+	*/
+	(function($){
+		var AppRouter = Backbone.Router.extend({
+			routes:{
+				"posts/:id":"getPost",
+				"manual":"manual",
+				"*actions":"defaultRoute"
+			},
+			getPost: function(id){
+				alert(id);
+			},
+			defaultRoute: function(actions){
+				alert(actions);
+			},
+			downloadFile: function(path){
+				alert(path);
+			},
+			loadView: function(route,action){
+				alert(route+"_"+action);
+			},
+			manual: function(){
+				alert('call manual');
+				app_router.navigate("/posts/"+404,{trigger:true,replace:true});
+			}
+			//trigger表示触发事件，如果为false，则只是url变化，并不会触发事件，replace表示url替换，而不是前进到这个url
+			//意味着启用该参数，浏览器的history不会记录这个变动。
+		});
+		
+		var app_router = new AppRouter;
+		Backbone.history.start();
+	})(jQuery);
+	
+	</script>
+</body>
+</html>
