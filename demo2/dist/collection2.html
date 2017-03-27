@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Backbonejs中的Collections实践</title>
+</head>
+<body>
+	<script type="text/javascript" src="http://the5fireblog.b0.upaiyun.com/staticfile/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="http://the5fireblog.b0.upaiyun.com/staticfile/underscore.js"></script>
+	<script type="text/javascript" src="http://the5fireblog.b0.upaiyun.com/staticfile/backbone.js"></script>
+	<script type="text/javascript">
+	/*
+		collection是model对象的一个有序的集合，也可以理解为model的容器
+	*/
+	(function($){
+		var Book = Backbone.Model.extend({
+			defaults:{
+				title:'default'
+			},
+			initialize: function(){
+
+			}
+		});
+
+		var BookShelf = Backbone.Collection.extend({
+			model: Book,
+			url: '/books/'
+		});
+
+		var book1 = new Book({title:'book1'});
+		var book2 = new Book({title:'book2'});
+		var book3 = new Book({title:'book3'});
+
+		var bookShelf = new BookShelf([book1,book2,book3]);//注意这里是数组，或者使用add
+		//var bookShelf = new BookShelf;
+
+		bookShelf.on("add",function(book){
+			alert("add a model"+book.get("title"));
+		});//add方法会触发add事件
+
+		// bookShelf.on("remove",function(){
+		// 	alert("remove");
+		// });
+
+		// bookShelf.add(book1); 
+		// bookShelf.add(book2); 
+		// bookShelf.add(book3);
+
+		// bookShelf.remove(book3); 
+		console.log(bookShelf.length);
+		var onebook = bookShelf.create({
+			title: "我是侯茹"
+		});//post对应的Model对象到配置好的url上，之后会返回一个model的实例
+		console.log(bookShelf.length);
+		// var showAllBooks = function(){
+		// 	//alert("length2: "+bookShelf.length)
+		// 	bookShelf.each(function(book){
+		// 		alert("show:"+book.get('title'));
+		// 	});
+		// };
+		// bookShelf.bind("reset",showAllBooks);
+		// //使用fetch从服务器端获取数据
+		// bookShelf.url='/books/';
+		// bookShelf.fetch({
+		// 	reset: true,
+		// 	success: function(collection,response,options){
+		// 		//alert("length1: "+bookShelf.length)
+		// 		collection.each(function(book){
+		// 			alert("success"+book.get('title'));
+		// 		});
+		// 	},error:function(collection,response,options){
+		// 		alert('error');
+		// 	}
+		// });
+		/*
+			collection在fetch到数据之后，默认情况会调用set方法，set方法向collection里面
+			添加新model,并触发collection的add事件，可以通过reset:true手动触发reset,reset会清空collection重新添加所有model
+		*/
+	})(jQuery);
+	
+	</script>
+</body>
+</html>
